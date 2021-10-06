@@ -22,6 +22,7 @@ public class GerenciadorViagensMontanhaApplication {
 	private UsuarioRepository usuarioRepository;
 	
 	public static void main(String[] args) {
+
 		SpringApplication.run(GerenciadorViagensMontanhaApplication.class, args);
 	}
 	
