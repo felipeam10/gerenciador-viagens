@@ -10,3 +10,7 @@ URL Swagger: http://localhost:8089/api/swagger-ui.html
 
 Use: https://jwt.io/ 
 para verificar tokens
+
+https://www.base64decode.org/
+
+        
