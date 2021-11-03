@@ -1,0 +1,454 @@
+{
+	"info": {
+		"_postman_id": "cd9abbf3-4a3e-42fd-a823-3f9d35a46547",
+		"name": "Gerenciador-Viagens",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Checagem da API",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8089/api/v1/status",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"api",
+						"v1",
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Autenticação Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = JSON.parse(responseBody);\r",
+							"\r",
+							"pm.environment.set(\"tokenAdmin\", response.data.token);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"admin@email.com\",\r\n  \"senha\": \"654321\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8089/api/v1/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"api",
+						"v1",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Autenticação Usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var response = JSON.parse(responseBody);\r",
+							"\r",
+							"pm.environment.set(\"tokenUser\", response.data.token);\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"usuario@email.com\",\r\n  \"senha\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8089/api/v1/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"api",
+						"v1",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastra Viagem",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var primeiroNome = pm.environment.replaceIn('{{$randomFirstName}}')\r",
+							"\r",
+							"pm.environment.set(\"primeiroNome\", primeiroNome);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//var response = pm.response.json();\r",
+							"var response = JSON.parse(responseBody);\r",
+							"\r",
+							"pm.test(\"Verifica o nome do acompanhante\", function(){\r",
+							"    pm.expect(response.data.acompanhante).to.equal(pm.environment.get(\"primeiroNome\"));\r",
+							"});\r",
+							"\r",
+							"const modeloEsperadoParaPostViagens = {\r",
+							"    \"$schema\": \"http://json-schema.org/draft-07/schema\",\r",
+							"    \"$id\": \"http://example.com/example.json\",\r",
+							"    \"type\": \"object\",\r",
+							"    \"title\": \"The root schema\",\r",
+							"    \"description\": \"The root schema comprises the entire JSON document.\",\r",
+							"    \"default\": {},\r",
+							"    \"examples\": [\r",
+							"        {\r",
+							"            \"data\": {\r",
+							"                \"id\": 6,\r",
+							"                \"localDeDestino\": \"Ceara\",\r",
+							"                \"dataPartida\": \"2022-02-10\",\r",
+							"                \"dataRetorno\": \"2022-02-10\",\r",
+							"                \"acompanhante\": \"Sabrina\",\r",
+							"                \"regiao\": \"Norte\"\r",
+							"            },\r",
+							"            \"errors\": []\r",
+							"        }\r",
+							"    ],\r",
+							"    \"required\": [\r",
+							"        \"data\",\r",
+							"        \"errors\"\r",
+							"    ],\r",
+							"    \"properties\": {\r",
+							"        \"data\": {\r",
+							"            \"$id\": \"#/properties/data\",\r",
+							"            \"type\": \"object\",\r",
+							"            \"title\": \"The data schema\",\r",
+							"            \"description\": \"An explanation about the purpose of this instance.\",\r",
+							"            \"default\": {},\r",
+							"            \"examples\": [\r",
+							"                {\r",
+							"                    \"id\": 6,\r",
+							"                    \"localDeDestino\": \"Ceara\",\r",
+							"                    \"dataPartida\": \"2022-02-10\",\r",
+							"                    \"dataRetorno\": \"2022-02-10\",\r",
+							"                    \"acompanhante\": \"Sabrina\",\r",
+							"                    \"regiao\": \"Norte\"\r",
+							"                }\r",
+							"            ],\r",
+							"            \"required\": [\r",
+							"                \"id\",\r",
+							"                \"localDeDestino\",\r",
+							"                \"dataPartida\",\r",
+							"                \"dataRetorno\",\r",
+							"                \"acompanhante\",\r",
+							"                \"regiao\"\r",
+							"            ],\r",
+							"            \"properties\": {\r",
+							"                \"id\": {\r",
+							"                    \"$id\": \"#/properties/data/properties/id\",\r",
+							"                    \"type\": \"integer\",\r",
+							"                    \"title\": \"The id schema\",\r",
+							"                    \"description\": \"An explanation about the purpose of this instance.\",\r",
+							"                    \"default\": 0,\r",
+							"                    \"examples\": [\r",
+							"                        6\r",
+							"                    ]\r",
+							"                },\r",
+							"                \"localDeDestino\": {\r",
+							"                    \"$id\": \"#/properties/data/properties/localDeDestino\",\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"title\": \"The localDeDestino schema\",\r",
+							"                    \"description\": \"An explanation about the purpose of this instance.\",\r",
+							"                    \"default\": \"\",\r",
+							"                    \"examples\": [\r",
+							"                        \"Ceara\"\r",
+							"                    ]\r",
+							"                },\r",
+							"                \"dataPartida\": {\r",
+							"                    \"$id\": \"#/properties/data/properties/dataPartida\",\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"title\": \"The dataPartida schema\",\r",
+							"                    \"description\": \"An explanation about the purpose of this instance.\",\r",
+							"                    \"default\": \"\",\r",
+							"                    \"examples\": [\r",
+							"                        \"2022-02-10\"\r",
+							"                    ]\r",
+							"                },\r",
+							"                \"dataRetorno\": {\r",
+							"                    \"$id\": \"#/properties/data/properties/dataRetorno\",\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"title\": \"The dataRetorno schema\",\r",
+							"                    \"description\": \"An explanation about the purpose of this instance.\",\r",
+							"                    \"default\": \"\",\r",
+							"                    \"examples\": [\r",
+							"                        \"2022-02-10\"\r",
+							"                    ]\r",
+							"                },\r",
+							"                \"acompanhante\": {\r",
+							"                    \"$id\": \"#/properties/data/properties/acompanhante\",\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"title\": \"The acompanhante schema\",\r",
+							"                    \"description\": \"An explanation about the purpose of this instance.\",\r",
+							"                    \"default\": \"\",\r",
+							"                    \"examples\": [\r",
+							"                        \"Sabrina\"\r",
+							"                    ]\r",
+							"                },\r",
+							"                \"regiao\": {\r",
+							"                    \"$id\": \"#/properties/data/properties/regiao\",\r",
+							"                    \"type\": \"string\",\r",
+							"                    \"title\": \"The regiao schema\",\r",
+							"                    \"description\": \"An explanation about the purpose of this instance.\",\r",
+							"                    \"default\": \"\",\r",
+							"                    \"examples\": [\r",
+							"                        \"Norte\"\r",
+							"                    ]\r",
+							"                }\r",
+							"            },\r",
+							"            \"additionalProperties\": true\r",
+							"        },\r",
+							"        \"errors\": {\r",
+							"            \"$id\": \"#/properties/errors\",\r",
+							"            \"type\": \"array\",\r",
+							"            \"title\": \"The errors schema\",\r",
+							"            \"description\": \"An explanation about the purpose of this instance.\",\r",
+							"            \"default\": [],\r",
+							"            \"examples\": [\r",
+							"                []\r",
+							"            ],\r",
+							"            \"additionalItems\": true,\r",
+							"            \"items\": {\r",
+							"                \"$id\": \"#/properties/errors/items\"\r",
+							"            }\r",
+							"        }\r",
+							"    },\r",
+							"    \"additionalProperties\": true\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Validar estrutura do POST Cadastra Viagem com 201\", () => {\r",
+							"    pm.response.to.jsonSchema(modeloEsperadoParaPostViagens);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{tokenAdmin}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"acompanhante\": \"{{primeiroNome}}\",\r\n  \"dataPartida\": \"2021-14-10\",\r\n  \"dataRetorno\": \"2021-14-10\",\r\n  \"localDeDestino\": \"Ceara\",\r\n  \"regiao\": \"Norte\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8089/api/v1/viagens",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"api",
+						"v1",
+						"viagens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retorna uma Viagem",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+						"key": "Authorization",
+						"value": "{{tokenUser}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8089/api/v1/viagens",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"api",
+						"v1",
+						"viagens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Altera Viagem",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verifica se tem responseBody\", function(){\r",
+							"    pm.response.to.not.have.body();\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"acompanhante\": \"{{primeiroNome}}\",\r\n  \"dataPartida\": \"2021-14-10\",\r\n  \"dataRetorno\": \"2021-14-10\",\r\n  \"localDeDestino\": \"Ceara\",\r\n  \"regiao\": \"Nordeste\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8089/api/v1/viagens/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8089",
+					"path": [
+						"api",
+						"v1",
+						"viagens",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Successful POST request\", function () {",
+					"    pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+					"});"
+				]
+			}
+		}
+	]
+}
