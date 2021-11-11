@@ -55,3 +55,15 @@ pm.test("Validar estrutura do POST Cadastra Viagem com 201", () => {
 
 ----------------------------------------------------------------------------------------------------------------
 
+Módulo 8 - Aula 13
+
+Compatibilidade com versões anteriores.
+
+Salvar o swagger em formato json de cada versão das alterações feitas.
+Depois, anexá-los na mesma pasta e abrir o git bash here.
+Verificar se o node.js está instalado, se não estiver, rodar o comando "npm install -g swagger-diff"
+Executar o seguinte comando: $ swagger-diff swagger-1.0.json swagger-2.0.json
+
+Anotar tbm sobre a versao web que o swagger-diff exibe.
+
+----------------------------------------------------------------------------------------------------------------

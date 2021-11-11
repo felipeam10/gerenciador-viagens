@@ -60,7 +60,7 @@ public class GerenciadorViagemController {
 	@ApiOperation(value = "Retorna todas as viagens")
 	@RequestMapping(value = "/v1/viagens", method = RequestMethod.GET, produces = "application/json")
 	@PreAuthorize("hasAnyRole('USUARIO')")
-	public ResponseEntity<Response<List<Viagem>>> listar(@RequestParam(value = "regiao", required = false) String regiao, @RequestHeader String Authorization) {
+	public ResponseEntity<Response<List<Viagem>>> listar(@RequestParam(value = "regiao", required = true) String regiao, @RequestHeader String Authorization) {
 		List<Viagem> viagens = null;
 
 		if (regiao == null) {
@@ -103,7 +103,7 @@ public class GerenciadorViagemController {
 
 
 	@ApiOperation(value = "Apaga uma viagem específica")
-	@RequestMapping(value = "/v1/viagens/{id}", method = RequestMethod.DELETE, produces = "application/json")
+	@RequestMapping(value = "/v1/viagem/{id}", method = RequestMethod.DELETE, produces = "application/json")
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable("id") Long id, @RequestHeader String Authorization) {
