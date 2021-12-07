@@ -67,3 +67,19 @@ Executar o seguinte comando: $ swagger-diff swagger-1.0.json swagger-2.0.json
 Anotar tbm sobre a versao web que o swagger-diff exibe.
 
 ----------------------------------------------------------------------------------------------------------------
+
+Módulo 6 - Aula 12 - Identificando e investigando inconsistências
+
+GET - Retornando viagens = http://localhost:8089/api/v1/viagens?regiao=Sul
+Com este endpoint simulamos o erro 500
+
+{
+    "timestamp": "2021-12-06T18:42:59.243+0000",
+    "status": 500,
+    "error": "Internal Server Error",
+    "exception": "com.montanha.gerenciador.services.exceptions.ViagemServiceException",
+    "message": "Não existem viagens cadastradas para esta Região",
+    "path": "/api/v1/viagens"
+}
+
+----------------------------------------------------------------------------------------------------------------

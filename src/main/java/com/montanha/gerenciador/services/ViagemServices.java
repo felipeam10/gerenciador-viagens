@@ -99,9 +99,9 @@ public class ViagemServices {
 	public List<Viagem> buscarViagensPorRegiao(String regiao) {
 		List<Viagem> viagens = viagemRepository.findAllByRegiao(regiao);
 
-		if (viagens.isEmpty()) {
-			throw new ViagemServiceException("Não existem viagens cadastradas para esta Região");
-		}
+//		if (viagens.isEmpty()) {
+//			throw new ViagemServiceException("Não existem viagens cadastradas para esta Região");
+//		}
 		return viagens;
 	}
 
