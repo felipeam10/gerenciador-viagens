@@ -18,7 +18,7 @@ public class ViagensTest {
 
         given()
             .contentType(ContentType.JSON)
-            .body("{\"email\": \"admin@email.com\",\"senha\": \"654321\"}")
+            .body("{\"email\":\"admin@email.com\",\"senha\":\"654321\"}")
         .when()
             .post("/v1/auth")
         .then()
