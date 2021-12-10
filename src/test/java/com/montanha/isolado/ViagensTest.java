@@ -45,5 +45,4 @@ public class ViagensTest {
                 .body("data.acompanhante", equalToIgnoringCase("acompanhanteteste"));
 
     }
-
 }
