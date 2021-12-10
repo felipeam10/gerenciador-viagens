@@ -43,6 +43,5 @@ public class ViagensTest {
                 .statusCode(201)
                 .body("data.localDeDestino", equalTo("Ceara"))
                 .body("data.acompanhante", equalToIgnoringCase("acompanhanteteste"));
-
     }
 }
