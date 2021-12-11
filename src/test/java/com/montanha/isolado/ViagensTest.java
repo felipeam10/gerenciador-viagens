@@ -5,14 +5,18 @@ import com.montanha.factory.ViagemDataFactory;
 import com.montanha.pojo.Usuario;
 import com.montanha.pojo.Viagem;
 import io.restassured.http.ContentType;
+import org.junit.Before;
 import org.junit.Test;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 public class ViagensTest {
 
-    @Test
-    public void testCadastroDeViagemValidoRetornaSucesso() {
+    private String token;
+
+    @Before
+    public void setup() {
+
         // Configurações Rest-Assured
         baseURI = "http://localhost";
         port =  8089;
@@ -20,7 +24,7 @@ public class ViagensTest {
 
         Usuario usuarioAdm = UsuarioDataFactory.criarUsuarioAdm();
 
-        String token = given()
+        this.token = given()
             .contentType(ContentType.JSON)
             .body(usuarioAdm)
         .when()
@@ -28,7 +32,10 @@ public class ViagensTest {
         .then()
             .extract()
                 .path("data.token");
+    }
 
+    @Test
+    public void testCadastroDeViagemValidoRetornaSucesso() {
 
         Viagem viagem = ViagemDataFactory.criarViagemValida();
 
