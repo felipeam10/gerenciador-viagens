@@ -1,12 +1,12 @@
 package com.montanha.isolado;
 
+import com.montanha.factory.UsuarioDataFactory;
+import com.montanha.factory.ViagemDataFactory;
 import com.montanha.pojo.Usuario;
 import com.montanha.pojo.Viagem;
 import io.restassured.http.ContentType;
-import org.junit.Assert;
 import org.junit.Test;
 import static io.restassured.RestAssured.*;
-import static io.restassured.matcher.RestAssuredMatchers.*;
 import static org.hamcrest.Matchers.*;
 
 public class ViagensTest {
@@ -18,9 +18,7 @@ public class ViagensTest {
         port =  8089;
         basePath = "/api";
 
-        Usuario usuarioAdm = new Usuario();
-        usuarioAdm.setEmail("admin@email.com");
-        usuarioAdm.setSenha("654321");
+        Usuario usuarioAdm = UsuarioDataFactory.criarUsuarioAdm();
 
         String token = given()
             .contentType(ContentType.JSON)
@@ -32,12 +30,7 @@ public class ViagensTest {
                 .path("data.token");
 
 
-        Viagem viagem = new Viagem();
-        viagem.setAcompanhante("AcompanhanteTeste");
-        viagem.setDataPartida("2021-14-10");
-        viagem.setDataRetorno("2021-14-10");
-        viagem.setLocalDeDestino("Ceara");
-        viagem.setRegiao("Norte");
+        Viagem viagem = ViagemDataFactory.criarViagemValida();
 
         given()
             .contentType(ContentType.JSON)
