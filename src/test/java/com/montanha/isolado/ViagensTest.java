@@ -61,13 +61,13 @@ public class ViagensTest {
         Viagem viagem = ViagemDataFactory.criarViagemSemLocalDeDestino();
 
         given()
-                .contentType(ContentType.JSON)
-                .body(viagem)
-                .header("Authorization", token)
-                .when()
-                .post("/v1/viagens")
-                .then()
-                .assertThat()
+            .contentType(ContentType.JSON)
+            .body(viagem)
+            .header("Authorization", token)
+        .when()
+            .post("/v1/viagens")
+        .then()
+            .assertThat()
                 .statusCode(400);
                 //.body("data.localDeDestino", equalTo("Ceara"))
                 //.body("data.acompanhante", equalToIgnoringCase("acompanhanteteste"));
