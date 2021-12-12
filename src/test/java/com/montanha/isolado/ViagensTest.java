@@ -7,6 +7,9 @@ import com.montanha.pojo.Viagem;
 import io.restassured.http.ContentType;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
+
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
@@ -35,7 +38,7 @@ public class ViagensTest {
     }
 
     @Test
-    public void testCadastroDeViagemValidoRetornaSucesso() {
+    public void testCadastroDeViagemValidoRetornaSucesso() throws IOException {
 
         Viagem viagem = ViagemDataFactory.criarViagemValida();
 
@@ -50,5 +53,23 @@ public class ViagensTest {
                 .statusCode(201)
                 .body("data.localDeDestino", equalTo("Ceara"))
                 .body("data.acompanhante", equalToIgnoringCase("acompanhanteteste"));
+    }
+
+    @Test
+    public void testCadastroDeViagemSemLocalDestinoRetorna400() throws IOException {
+
+        Viagem viagem = ViagemDataFactory.criarViagemSemLocalDeDestino();
+
+        given()
+                .contentType(ContentType.JSON)
+                .body(viagem)
+                .header("Authorization", token)
+                .when()
+                .post("/v1/viagens")
+                .then()
+                .assertThat()
+                .statusCode(400);
+                //.body("data.localDeDestino", equalTo("Ceara"))
+                //.body("data.acompanhante", equalToIgnoringCase("acompanhanteteste"));
     }
 }
