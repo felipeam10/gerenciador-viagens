@@ -1,10 +1,12 @@
 package com.montanha.isolado;
 
+import com.montanha.config.Configuracoes;
 import com.montanha.factory.UsuarioDataFactory;
 import com.montanha.factory.ViagemDataFactory;
 import com.montanha.pojo.Usuario;
 import com.montanha.pojo.Viagem;
 import io.restassured.http.ContentType;
+import org.aeonbits.owner.ConfigFactory;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,9 +24,11 @@ public class ViagensTest {
     public void setup() {
 
         // Configurações Rest-Assured
-        baseURI = "http://localhost";
-        port =  8089;
-        basePath = "/api";
+        Configuracoes configuracoes = ConfigFactory.create(Configuracoes.class);
+
+        baseURI = configuracoes.baseURI();
+        port =  configuracoes.port();
+        basePath = configuracoes.basePath();
 
         Usuario usuarioAdm = UsuarioDataFactory.criarUsuarioAdm();
 
