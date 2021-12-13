@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
+import static io.restassured.module.jsv.JsonSchemaValidator.*;
 
 public class ViagensTest {
 
@@ -71,5 +72,23 @@ public class ViagensTest {
                 .statusCode(400);
                 //.body("data.localDeDestino", equalTo("Ceara"))
                 //.body("data.acompanhante", equalToIgnoringCase("acompanhanteteste"));
+    }
+
+    @Test
+    public void testCadastroDeViagemValidaContrato() throws IOException {
+
+        Viagem viagem = ViagemDataFactory.criarViagemValida();
+
+        given()
+            .contentType(ContentType.JSON)
+            .body(viagem)
+            .header("Authorization", token)
+        .when()
+            .post("/v1/viagens")
+        .then()
+            .assertThat()
+                .statusCode(201)
+                .body(matchesJsonSchemaInClasspath("schemas/postV1ViagensViagemValida.json"))
+        ;
     }
 }
