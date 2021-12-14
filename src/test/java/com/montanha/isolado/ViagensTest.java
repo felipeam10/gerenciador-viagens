@@ -18,7 +18,8 @@ import static io.restassured.module.jsv.JsonSchemaValidator.*;
 
 public class ViagensTest {
 
-    private String token;
+    private String tokenAdmin;
+    private String tokenUsu;
 
     @Before
     public void setup() {
@@ -32,7 +33,7 @@ public class ViagensTest {
 
         Usuario usuarioAdm = UsuarioDataFactory.criarUsuarioAdm();
 
-        this.token = given()
+        this.tokenAdmin = given()
             .contentType(ContentType.JSON)
             .body(usuarioAdm)
         .when()
@@ -40,6 +41,18 @@ public class ViagensTest {
         .then()
             .extract()
                 .path("data.token");
+
+        Usuario usuarioComum = UsuarioDataFactory.criarUsuarioComum();
+
+        this.tokenUsu = given()
+            .contentType(ContentType.JSON)
+            .body(usuarioComum)
+        .when()
+            .post("/v1/auth")
+        .then()
+            .extract()
+                .path("data.token");
+
     }
 
     @Test
@@ -50,7 +63,7 @@ public class ViagensTest {
         given()
             .contentType(ContentType.JSON)
             .body(viagem)
-            .header("Authorization", token)
+            .header("Authorization", tokenAdmin)
         .when()
                 .post("/v1/viagens")
         .then()
@@ -68,7 +81,7 @@ public class ViagensTest {
         given()
             .contentType(ContentType.JSON)
             .body(viagem)
-            .header("Authorization", token)
+            .header("Authorization", tokenAdmin)
         .when()
             .post("/v1/viagens")
         .then()
@@ -86,13 +99,31 @@ public class ViagensTest {
         given()
             .contentType(ContentType.JSON)
             .body(viagem)
-            .header("Authorization", token)
+            .header("Authorization", tokenAdmin)
         .when()
             .post("/v1/viagens")
         .then()
             .assertThat()
                 .statusCode(201)
                 .body(matchesJsonSchemaInClasspath("schemas/postV1ViagensViagemValida.json"))
+        ;
+    }
+
+    @Test //teste independente
+    public void testBuscaViagemValida() throws IOException {
+
+        Viagem viagem = ViagemDataFactory.criarViagemValida();
+
+        given()
+            .contentType(ContentType.JSON)
+            .body(viagem)
+            .header("Authorization", tokenUsu)
+        .when()
+                .get("/v1/viagens/1")
+        .then()
+            .assertThat()
+                .statusCode(200)
+                    .body(matchesJsonSchemaInClasspath("schemas/postV1ViagensViagemValida.json"))
         ;
     }
 }
