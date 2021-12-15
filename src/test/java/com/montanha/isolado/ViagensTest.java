@@ -126,4 +126,18 @@ public class ViagensTest {
                     .body(matchesJsonSchemaInClasspath("schemas/postV1ViagensViagemValida.json"))
         ;
     }
+
+    @Test //teste independente
+    public void testProcessaCorretamenteRetornoApiTempo()  {
+
+        given()
+            .header("Authorization", tokenUsu)
+        .when()
+            .get("/v1/viagens/1")
+        .then()
+            .assertThat()
+                .statusCode(200)
+            .body("data.temperatura", equalTo(30.0f))
+        ;
+    }
 }
